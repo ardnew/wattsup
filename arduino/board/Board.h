@@ -5,11 +5,15 @@
 #include "adafruit/nrf52/ledglasses_nrf52840.h"
 #endif
 
+class Board;
+
 class LED {
 private:
-  uint16_t   _pin;
-  bool       _on;
-  duration_t _lit;
+  Board      *_board;
+  uint16_t    _pin;
+  bool        _on;
+  duration_t  _lit;
+  void (Board::*_onLit)(duration_t const);
   uint16_t init(uint16_t const pin) {
     pinMode(pin, OUTPUT);
     return pin;
@@ -19,11 +23,12 @@ private:
     return on;
   }
 public:
-  LED(int const pin, bool const on):
-    _pin(init(pin)), _on(write(on)), _lit(0) {}
+  LED(Board * const board, int const pin, bool const on,
+      void (Board::*onLit)(duration_t const) = nullptr):
+    _board(board), _pin(init(pin)), _on(write(on)), _lit(0), _onLit(onLit) {}
   ~LED() {}
   bool get(void) { return _on; }
-  void set(bool const on, duration_t const now) {
+  void set(bool const on, duration_t const now = millis()) {
     if (_on != on) {
       _on = write(on);
       if (on) {
@@ -31,8 +36,23 @@ public:
       }
     }
   }
-  duration_t lit(duration_t const now) {
-    return now - _lit;
+  void update(duration_t const now) {
+    // Turn LED on for onDuty(ms) every period(ms).
+    static duration_t const period = 1000UL; // 1.0 s
+    static duration_t const onDuty =  100UL; // 0.1 s
+    if (get()) {
+      if (now - _lit >= onDuty) {
+        set(false, now);
+      }
+    } else {
+      if (now - _lit >= period) {
+        set(true, now);
+        // Invoke the callback every time the LED turns on.
+        if (nullptr != _board && nullptr != _onLit) {
+          (_board->*_onLit)(now);
+        }
+      }
+    }
   }
 };
 
@@ -42,7 +62,7 @@ private:
   I2C  *_i2c;
   LED  *_led;
 
-  void scan(void) {
+  void scan(duration_t const now) {
     for (int addr = 1; addr < 128; ++addr) {
       _i2c->beginTransmission(addr);
       if (0 == _i2c->endTransmission()) {
@@ -58,7 +78,7 @@ public:
   Board(void):
     _uart(new UART(UART_BUS)),
     _i2c(new I2C(I2C_BUS)),
-    _led(new LED(PIN_LED, false)) {
+    _led(new LED(this, PIN_LED, false, &Board::scan)) {
   }
 
   ~Board(void) {
@@ -74,24 +94,10 @@ public:
       delete _led;
     }
   }
-
-  void update(duration_t now) {
-
-    // Turn LED on for onDuty(ms) every period(ms).
-    static duration_t const period = 1000UL; // 1.0 s
-    static duration_t const onDuty =  100UL; // 0.1 s
-
-    if (_led->get()) {
-      if (_led->lit(now) >= onDuty) {
-        _led->set(false, now);
-      }
-    } else {
-      if (_led->lit(now) >= period) {
-        _led->set(true, now);
-        scan();
-      }
-    }
+  void update(duration_t const now) {
+    _led->update(now);
   }
+
 };
 
 #endif // Board_h
