@@ -1,13 +1,11 @@
-// arduino.ino (automatically generated 2022-08-28 14:55:37 CDT)
+#include "Target.h"
 
-#include "board/Board.h"
-
-static Board *board;
+static Target *target;
 
 void setup() {
-  board = new Board;
+  target = new Target;
 }
 
 void loop() {
-  board->update(millis());
+  target->update(millis());
 }

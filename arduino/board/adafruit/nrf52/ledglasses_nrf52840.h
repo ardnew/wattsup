@@ -10,23 +10,33 @@
 #define LED_OFF         !(LED_STATE_ON)
 #define LED_STATE(bool) ((bool) ? (LED_ON) : (LED_OFF))
 
-#define UART_BUS (Serial)
-#define I2C_BUS  (Wire)
-
-class UART: public Adafruit_USBD_CDC {
+class uart: public Adafruit_USBD_CDC {
 public:
-  UART(Adafruit_USBD_CDC &bus): Adafruit_USBD_CDC(bus) {
+  uart(void): Adafruit_USBD_CDC(Serial) {
     begin(115200);
   }
-  virtual ~UART(void) {}
+  virtual ~uart(void) {
+    end();
+  }
 };
 
-class I2C: public TwoWire {
+class i2c: public TwoWire {
 public:
-  I2C(TwoWire &bus): TwoWire(bus) {
+  i2c(void): TwoWire(Wire) {
     begin();
   }
-  virtual ~I2C(void) {}
+  virtual ~i2c(void) {
+    end();
+  }
+  void initTransfer(uint8_t addr) {
+    beginTransmission(addr);
+  }
+  uint8_t endTransfer(void) {
+    return endTransmission();
+  }
+  uint8_t endTransfer(bool stop) {
+    return endTransmission(stop);
+  }
 };
 
 // Return type of Arduino core function millis()
