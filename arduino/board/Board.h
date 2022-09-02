@@ -37,7 +37,7 @@ public:
   LED  *led(void)  { return _led; }
   void update(duration_t const now) {
     if (_led->update(now)) {
-      scan(now);
+      //scan(now);
     }
   }
 };

@@ -3,18 +3,22 @@
 
 #include "OLED.h"
 
+#include "../sensor/Sensor.h"
+
 class Display {
 private:
-  OLED *_oled;
+  Board *_board;
+  OLED  *_oled;
 public:
   Display(Board &board):
-    _oled(new OLED(board)) {}
+    _board(&board), _oled(new OLED(board)) {}
   virtual ~Display(void) {
     if (nullptr != _oled) { delete _oled; }
   }
   void update(duration_t now) {
     _oled->update(now);
   }
+  OLED *oled(void) { return _oled; }
 };
 
 #endif // Display_h
