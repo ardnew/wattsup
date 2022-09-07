@@ -21,6 +21,7 @@
 #ifndef display_inc_h
 #define display_inc_h
 
-#include "oled/ssd1306_i2c_128x32.h"
+//#include "oled/ssd1306_i2c_128x32.h"
+#include "oled/sh1107_i2c_128x64.h"
 
 #endif // display_inc_h

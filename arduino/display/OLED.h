@@ -3,7 +3,7 @@
 
 #include "display.inc.h"
 
-#define OLED_UPDATE_PERIOD_MS (25) // 40 Hz
+#define OLED_UPDATE_PERIOD_MS (250) // 4 Hz
 
 class OLED: protected oled {
 private:
@@ -23,7 +23,6 @@ public:
       if (_ready) {
         display();
         last = now;
-        _board->uart()->println("OLED update");
       } else {
         _board->uart()->println("OLED not ready!");
       }

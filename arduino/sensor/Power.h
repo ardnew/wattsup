@@ -31,7 +31,7 @@ public:
         _voltage = voltage();
         _current = current();
         last     = now;
-        _board->uart()->printf("%8.2f mW, %8.2f mV, %8.2f mA\n", _power, _voltage, _current);
+
       } else {
         _board->uart()->println("Power not ready!");
       }

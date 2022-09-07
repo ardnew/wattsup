@@ -25,7 +25,7 @@ public:
   Board(void):
     _uart(new UART()),
     _i2c(new I2C()),
-    _led(new LED(PIN_LED)) {
+    _led(new LED()) {
   }
   virtual ~Board(void) {
     if (nullptr != _led)  { delete _led; }

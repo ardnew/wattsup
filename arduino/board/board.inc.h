@@ -23,6 +23,8 @@
 
 #if defined(ARDUINO_NRF52840_LED_GLASSES)
 #include "adafruit/nrf52/ledglasses_nrf52840.h"
+#elif defined(ARDUINO_ADAFRUIT_QTPY_ESP32_PICO)
+#include "esp32/esp32/adafruit_qtpy_esp32_pico.h"
 #endif
 
 #endif // board_inc_h
