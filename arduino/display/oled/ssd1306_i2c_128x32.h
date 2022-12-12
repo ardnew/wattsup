@@ -22,7 +22,7 @@ public:
       setTextColor(SSD1306_WHITE);
       clearDisplay();
     }
-    board.uart()->printf("SSD1306: %s\n", _ready ? "OK" : "FAIL");
+    board.uart()->printf("SSD1306: %s\r\n", _ready ? "OK" : "FAIL");
   }
   virtual ~oled(void) {}
 };

@@ -12,10 +12,6 @@
 
 #define UART_IP          (Serial1)
 
-#define UART_IP          (Serial1)
-
-#define UART_IP          (Serial1)
-
 #define PIN_LED           (PIN_LED1)
 
 #define UART_USB          (Serial)
@@ -79,6 +75,13 @@ public:
   uint8_t endTransfer(bool stop) {
     return endTransmission(stop);
   }
+};
+
+class board {
+public:
+  board(void) {}
+  virtual ~board(void) {}
+  void update(duration_t const now) { (void)now; }
 };
 
 #endif // ledglasses_nrf52840_h

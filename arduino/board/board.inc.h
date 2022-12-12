@@ -25,6 +25,8 @@
 #include "adafruit/nrf52/ledglasses_nrf52840.h"
 #elif defined(ARDUINO_ADAFRUIT_QTPY_ESP32_PICO)
 #include "esp32/esp32/adafruit_qtpy_esp32_pico.h"
+#elif defined(ARDUINO_M5Stick_C_PLUS)
+#include "m5stack/esp32/m5stick-c-plus.h"
 #endif
 
 #endif // board_inc_h

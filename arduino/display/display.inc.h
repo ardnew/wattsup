@@ -22,6 +22,7 @@
 #define display_inc_h
 
 //#include "oled/ssd1306_i2c_128x32.h"
-#include "oled/sh1107_i2c_128x64.h"
+//#include "oled/sh1107_i2c_128x64.h"
+#include "oled/st7789_spi_135x240.h"
 
 #endif // display_inc_h

@@ -33,22 +33,22 @@ public:
     oled::clearDisplay();
   }
   void setCursor(int16_t const x, int16_t const y) {
-    oled::setCursor(x, y);
+  //  oled::setCursor(x, y);
   }
   size_t printf(const char * format, ...) {
-    static size_t const bufsz = 256;
-    char buf[bufsz];
-    va_list ap;
-    va_start(ap, format);
-    int len = vsnprintf(buf, bufsz, format, ap);
-    oled::print(buf); // vsnprintf always null-terminates
-    va_end(ap);
-    return len;
+  //  static size_t const bufsz = 256;
+  //  char buf[bufsz];
+  //  va_list ap;
+  //  va_start(ap, format);
+  //  int len = vsnprintf(buf, bufsz, format, ap);
+  //  oled::print(buf); // vsnprintf always null-terminates
+  //  va_end(ap);
+  //  return len;
   }
-  size_t print(const char *p)   { return oled::print(p); }
-  size_t print(int d, int base) { return oled::print(d, base); }
-  size_t println(void)          { return oled::println(); }
-  size_t println(const char *p) { return oled::println(p); }
+  //size_t print(const char *p)   { return oled::print(p); }
+  //size_t print(int d, int base) { return oled::print(d, base); }
+  //size_t println(void)          { return oled::println(); }
+  //size_t println(const char *p) { return oled::println(p); }
 };
 
 #endif // OLED_h

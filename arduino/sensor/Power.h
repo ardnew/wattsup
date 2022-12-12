@@ -3,7 +3,7 @@
 
 #include "sensor.inc.h"
 
-#define POWER_UPDATE_PERIOD_MS (200) // 5 Hz
+#define POWER_UPDATE_PERIOD_MS (500) // 2 Hz
 
 class Power: protected power {
 private:
@@ -25,15 +25,16 @@ public:
   virtual ~Power(void) {}
   void update(duration_t now) {
     static duration_t last = 0UL;
-    if (now - last >= _period) {
+    if (last == 0UL || now - last >= _period) {
       if (_ready) {
-        _power   = (*this)();
-        _voltage = voltage();
-        _current = current();
+        // _power   = (*this)();
+        // _voltage = voltage();
+        // _current = current();
         last     = now;
-
+        _board->uart()->printf("%8.2f mW   %8.2f mV   %8.2f mA\r\n", _power, _voltage, _current);
       } else {
-        _board->uart()->println("Power not ready!");
+        //_board->uart()->println("Power not ready!");
+        // begin();
       }
     }
   }

@@ -1,11 +1,11 @@
 #include "Target.h"
 
-static Target *target;
+static Target * target;
 
 void setup() {
-  target = new Target;
+  target = new Target();
 }
 
 void loop() {
-  //target->update(millis());
+  target->update(millis());
 }

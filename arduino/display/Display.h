@@ -10,6 +10,10 @@ private:
   Board *_board;
   OLED  *_oled;
 public:
+  static Board &reset(Board &board) {
+    return oled::reset(board);
+  }
+public:
   Display(Board &board):
     _board(&board), _oled(new OLED(board)) {}
   virtual ~Display(void) {
