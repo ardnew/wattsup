@@ -18,19 +18,14 @@ public:
   power(Board &board):
     Adafruit_INA260(),
     _board(&board) {
-    _ready = begin();
+    if ((_ready = Adafruit_INA260::begin(POWER_ADDRESS, _board->i2c()))) {
+      setCurrentConversionTime(POWER_ADC_PERIOD);
+      setVoltageConversionTime(POWER_ADC_PERIOD);
+      setAveragingCount(POWER_ADC_SAMPLE);
+    }
+    _board->uart()->printf("INA260: %s\r\n", _ready ? "OK" : "FAIL");
   }
   virtual ~power(void) {}
-  bool begin(void) {
-    _board->uart()->printf("I2C = %08x\n", _board->i2c());
-    _ready = Adafruit_INA260::begin(POWER_ADDRESS, _board->i2c());
-    if (_ready) {
-      // setCurrentConversionTime(POWER_ADC_PERIOD);
-      // setVoltageConversionTime(POWER_ADC_PERIOD);
-      // setAveragingCount(POWER_ADC_SAMPLE);
-    }
-    // _board->uart()->printf("INA260: %s\r\n", _ready ? "OK" : "FAIL");
-  }
   float operator ()(void) { return _ready ? readPower() : 0.0F; }
   float voltage(void)     { return _ready ? readBusVoltage() : 0.0F; }
   float current(void)     { return _ready ? readCurrent() : 0.0F; }

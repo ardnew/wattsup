@@ -3,7 +3,7 @@
 
 #include "sensor.inc.h"
 
-#define POWER_UPDATE_PERIOD_MS (500) // 2 Hz
+#define POWER_UPDATE_PERIOD_MS (150) // 6.667 Hz (135.424ms sample rate)
 
 class Power: protected power {
 private:
@@ -27,14 +27,13 @@ public:
     static duration_t last = 0UL;
     if (last == 0UL || now - last >= _period) {
       if (_ready) {
-        // _power   = (*this)();
-        // _voltage = voltage();
-        // _current = current();
+        _power   = (*this)();
+        _voltage = voltage();
+        _current = current();
         last     = now;
         _board->uart()->printf("%8.2f mW   %8.2f mV   %8.2f mA\r\n", _power, _voltage, _current);
       } else {
-        //_board->uart()->println("Power not ready!");
-        // begin();
+        _board->uart()->println("Power not ready!");
       }
     }
   }

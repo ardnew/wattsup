@@ -9,7 +9,8 @@ private:
   Power *_power;
 public:
   Sensor(Board &board):
-    _board(&board), _power(new Power(board)) {}
+    _board(&board),
+    _power(new Power(board)) {}
   virtual ~Sensor(void) {
     if (nullptr != _power) { delete _power; }
   }
